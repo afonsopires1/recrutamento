@@ -1,43 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Input, Container, Text, Paper } from '@mantine/core';
-
-
-
-//structure of each to-do item
-interface Item {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import { useTodo } from "@/lib/frontend/hooks";
 
 export const TodoList: React.FC = () => {
-  
-  //initialize to-do examples
-  const [todos, setTodos] = useState<Item[]>([
-    { id: 1, text: "Teste", completed: false },
-    { id: 2, text: "Teste2", completed: false }
-  ]);
+  const { todos, input, setInput, deleteTodo, addTodo } = useTodo();
 
-  const [input, setInput] = useState<string>("");
-
-  //function to delete a to-do by ID
-  const deleteTodo = (id: number) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  };
-
-
-  // Function to handle the button click event for adding a new todo
+  // vai chamar o hook de adicionar novo to-do e limpa o input field
   const handleClick = () => {
-    if (input.trim() !== "") {
-      const newTodo: Item = { id: Date.now(), text: input, completed: false };
-      //update the todo list adding a new item and clearing the input field
-      setTodos((prevTodos) => [...prevTodos, newTodo]);
-      setInput("");
-    }
+    addTodo(input);
+    setInput(''); 
   };
-
-
-  
 
   return (
     <div
@@ -47,9 +19,8 @@ export const TodoList: React.FC = () => {
       }}
     >
       <div className="text-center mb-6">
-        <Text size="xl"  color="white">
-        To-Do List
-           
+        <Text size="xl" color="white">
+          To-Do List
         </Text>
       </div>
       <Container size="sm">
@@ -101,6 +72,6 @@ export const TodoList: React.FC = () => {
       </Container>
     </div>
   );
-}
+};
 
 export default TodoList;
